@@ -2,7 +2,7 @@
 /**
  * _puts_recursion - puts a string to stdout recursively
  *
- * s: string that will be put to stdout
+ * @s: string that will be put to stdout
  *
  * Return: terminate the program
  */
