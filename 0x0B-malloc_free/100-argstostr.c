@@ -1,40 +1,58 @@
-#include "main.h"
 #include <stdlib.h>
+#include <stdio.h>
+int _strLen(char *);
 /**
- * argstostr - main entry function
- * @ac: int input
- * @av: double pointer array
- * Return: 0
+ * argstostr - takes all args and concatenates them into str
+ *
+ * @ac: arg count, num of args in av
+ * @av: array of pointers to words (args)
+ *
+ * Return: pointer to beginning of new string
  */
 char *argstostr(int ac, char **av)
 {
-	int i, n, r = 0, l = 0;
-	char *str;
+	int i = 0, n = 0, totalSize = 0;
+	char *newStr, *startNewStr;
 
-	if (ac == 0 || av == NULL)
+	if (ac <= 0 || av == NULL)
 		return (NULL);
 
-	for (i = 0; i < ac; i++)
+	while (i < ac)
+	{
+		totalSize += _strLen(av[i]) + 1; /* need space for additional new line */
+		i++;
+	}
+	newStr = malloc(sizeof(char) * totalSize + 1); /* plus null byte */
+	if (newStr == NULL) /* ran out of memory */
+		return (NULL);
+	startNewStr = newStr;
+
+	i = 0;
+	while (i < ac)
 	{
 		for (n = 0; av[i][n]; n++)
-			l++;
+		{
+			*newStr++ = av[i][n];
+		}
+		*newStr++ = '\n';
+		i++;
 	}
-	l += ac;
-
-	str = malloc(sizeof(char) * l + 1);
-	if (str == NULL)
-		return (NULL);
-	for (i = 0; i < ac; i++)
-	{
-	for (n = 0; av[i][n]; n++)
-	{
-		str[r] = av[i][n];
-		r++;
-	}
-	if (str[r] == '\0')
-	{
-		str[r++] = '\n';
-	}
-	}
-	return (str);
+	*newStr = '\0';
+	return (startNewStr);
 }
+/**
+ * _strLen - returns length of string
+ *
+ * @s: string to check
+ *
+ * Return: integer, length of string
+ */
+int _strLen(char *s)
+{
+	int strL = 0;
+
+	while (*(s + strL))
+		strL++;
+	return (strL);
+}
+
